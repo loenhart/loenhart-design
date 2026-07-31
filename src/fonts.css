@@ -1,0 +1,8 @@
+/*
+ * Web-font loading for projects without a framework font loader (e.g. Create
+ * React App). Next.js projects should use next/font instead and skip this file.
+ *
+ * Loading via @import blocks rendering; prefer <link rel="preconnect"> plus a
+ * stylesheet link in the document head where you control it.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');

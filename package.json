@@ -1,0 +1,24 @@
+{
+  "name": "@loenhart/design",
+  "version": "0.1.0",
+  "description": "Shared design system for Loenhart Health properties — tokens, primitives and per-brand surfaces.",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "files": ["src"],
+  "exports": {
+    ".": "./src/index.css",
+    "./loenhart.css": "./src/loenhart.css",
+    "./argonauts.css": "./src/argonauts.css",
+    "./tailwind.css": "./src/tailwind.css",
+    "./fonts.css": "./src/fonts.css",
+    "./base.css": "./src/base.css",
+    "./tokens/core.css": "./src/tokens/core.css",
+    "./brands/loenhart.css": "./src/tokens/brand-loenhart.css",
+    "./brands/argonauts.css": "./src/tokens/brand-argonauts.css",
+    "./primitives/*": "./src/primitives/*"
+  },
+  "scripts": {
+    "test": "node test/tokens.test.mjs"
+  }
+}

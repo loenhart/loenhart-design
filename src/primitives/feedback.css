@@ -1,0 +1,41 @@
+/*
+ * Status messaging.
+ *
+ * Pair with role="status" and aria-live="polite" for confirmations, or
+ * role="alert" for errors, so the message is announced and not merely visible.
+ */
+
+.status-error {
+  border: 1px solid rgba(221, 90, 109, 0.28);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(93, 25, 38, 0.7), rgba(52, 16, 26, 0.82));
+  padding: 0.85rem 1rem;
+  color: #ffd4db;
+}
+
+.status-success {
+  border: 1px solid rgba(116, 163, 209, 0.28);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(31, 63, 97, 0.72), rgba(13, 32, 54, 0.84));
+  padding: 0.85rem 1rem;
+  color: #d7ebff;
+}
+
+.notice-warning {
+  border: 1px solid rgba(221, 90, 109, 0.34);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(88, 22, 35, 0.88), rgba(50, 15, 25, 0.92));
+  padding: 0.85rem 1rem;
+  color: #ffe7ea;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 36px rgba(58, 10, 21, 0.18);
+}
+
+/* Red gradient dot for structured lists. Size it at the call site. */
+.list-marker {
+  display: inline-block;
+  background: linear-gradient(180deg, #db5a6c, #9f2f44);
+  box-shadow: 0 0 0 4px rgba(201, 70, 89, 0.12);
+  border-radius: 9999px;
+}

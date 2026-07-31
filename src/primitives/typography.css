@@ -1,0 +1,47 @@
+/*
+ * Editorial type scale.
+ *
+ * Cormorant Garamond for display headings, Manrope for everything else, Geist
+ * Mono for figures that should align in a column (loads, tempo, set counts).
+ */
+
+.page-title {
+  font-family: var(--font-brand-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.section-title {
+  font-family: var(--font-brand-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.036em;
+  line-height: 1.02;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.body-copy {
+  color: var(--muted);
+}
+
+.meta-copy {
+  color: var(--soft);
+}
+
+/* Uppercase label for small headings above a group. */
+.kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* Tabular figures, so numbers line up in tables and set grids. */
+.mono {
+  font-family: var(--font-brand-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}

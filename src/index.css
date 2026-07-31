@@ -1,0 +1,20 @@
+/*
+ * @loenhart/design — everything except the brand surfaces.
+ *
+ * Import this, then exactly one brand file:
+ *
+ *   @import '@loenhart/design';
+ *   @import '@loenhart/design/brands/loenhart.css';
+ *
+ * The brand file must come second: it sets --background and the panel ramp,
+ * which core.css deliberately leaves undefined.
+ */
+
+@import './tokens/core.css';
+@import './base.css';
+@import './primitives/typography.css';
+@import './primitives/surfaces.css';
+@import './primitives/controls.css';
+@import './primitives/badges.css';
+@import './primitives/feedback.css';
+@import './primitives/a11y.css';

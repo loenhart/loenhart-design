@@ -1,0 +1,30 @@
+/*
+ * Loenhart Health surfaces.
+ *
+ * Used by the Lucky Health marketing site and by LTS, so the coaching product
+ * and the site clients arrive from read as one family.
+ *
+ * Import AFTER tokens/core.css.
+ */
+
+:root {
+  --background: #07111f;
+  --background-deep: #030914;
+
+  --panel: rgba(10, 23, 42, 0.84);
+  --panel-strong: rgba(14, 30, 52, 0.94);
+  --panel-soft: rgba(22, 46, 76, 0.78);
+  --panel-contrast: rgba(28, 58, 92, 0.94);
+
+  /* The lightest blue in the ramp; brand-specific because it sits against the
+     surface rather than on top of it. */
+  --brand-blue-soft: #5e87b0;
+
+  /* Page background: a deep navy-to-black gradient with soft blue and red
+     glows. Part of the brand, not decoration. */
+  --brand-backdrop:
+    radial-gradient(circle at 12% 12%, rgba(61, 112, 159, 0.2), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(201, 70, 89, 0.16), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(34, 74, 118, 0.2), transparent 30%),
+    linear-gradient(180deg, #091323 0%, #08111d 46%, #040a13 100%);
+}

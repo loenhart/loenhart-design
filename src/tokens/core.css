@@ -1,0 +1,52 @@
+/*
+ * Core design tokens — shared by every Loenhart Health property.
+ *
+ * These are the values that were already byte-identical across the Lucky Health
+ * marketing site, the Argonauts athlete app, and LTS. They define the brand's
+ * *language*: blue for depth and primary action, red reserved for accents,
+ * markers, focus rings and warning states.
+ *
+ * Surfaces are NOT here. Each property sets its own background and panel
+ * colours, because that is the one axis that legitimately varies between brands
+ * — see tokens/brand-*.css. Everything in this file must be identical
+ * everywhere; if a property needs to change one of these, it belongs in a brand
+ * file instead.
+ */
+
+:root {
+  /* Text */
+  --foreground: #f7f9fd;
+  --muted: #c8d3e2;
+  --soft: #90a4bd;
+
+  /* Hairlines */
+  --line: rgba(207, 224, 245, 0.14);
+  --line-strong: rgba(207, 224, 245, 0.28);
+
+  /* Brand blue — depth, primary actions */
+  --brand-blue: #2c5785;
+  --brand-blue-strong: #3d709f;
+  --brand-blue-deep: #173353;
+
+  /*
+   * Brand red — accents, markers, focus rings, warning states, light glow.
+   * Never the default for a primary action: using it there makes the secondary
+   * treatment the loudest thing on the page.
+   */
+  --brand-red: #c94659;
+  --brand-red-strong: #dd5a6d;
+  --brand-red-deep: #7f2233;
+  --brand-red-soft: rgba(201, 70, 89, 0.18);
+  --brand-red-glow: rgba(201, 70, 89, 0.3);
+
+  --shadow: 0 26px 80px rgba(1, 6, 16, 0.48);
+
+  /* Type stack. Load the faces via fonts.css or the framework's font loader. */
+  --font-brand-sans: 'Manrope';
+  --font-brand-display: 'Cormorant Garamond';
+  --font-brand-mono: 'Geist Mono';
+
+  /* Motion. The system leans on gradients and shadows, not movement. */
+  --transition-fast: 160ms ease;
+  --transition-base: 180ms ease;
+}

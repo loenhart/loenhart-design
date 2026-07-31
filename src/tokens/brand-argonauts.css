@@ -1,0 +1,30 @@
+/*
+ * Toronto Argonauts surfaces — Night Sky + Air Force Blue.
+ *
+ * The same core language on the club's own surfaces, so the athlete-facing app
+ * reads as Argonauts while behaving like every other Loenhart property.
+ *
+ * Import AFTER tokens/core.css.
+ */
+
+:root {
+  --background: #051C3E;      /* Night Sky */
+  --background-deep: #030f24; /* deeper Night Sky derivative */
+
+  --panel: rgba(5, 28, 62, 0.84);
+  --panel-strong: rgba(5, 28, 62, 0.94);
+  --panel-soft: rgba(10, 44, 88, 0.78);
+  --panel-contrast: rgba(14, 52, 98, 0.94);
+
+  /* Air Force Blue (RAF) — the official club accent, which also serves as the
+     light end of the blue ramp. */
+  --brand-blue-soft: #5F90B2;
+  --argos-blue: #5F90B2;
+  --argos-navy: #051C3E;
+
+  --brand-backdrop:
+    radial-gradient(circle at 12% 12%, rgba(95, 144, 178, 0.2), transparent 28%),
+    radial-gradient(circle at 88% 10%, rgba(201, 70, 89, 0.14), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(10, 44, 88, 0.24), transparent 30%),
+    linear-gradient(180deg, #06213f 0%, #051C3E 46%, #030f24 100%);
+}

@@ -1,0 +1,32 @@
+/*
+ * Tailwind 4 bridge.
+ *
+ * Maps the design tokens into Tailwind's theme so utilities like `bg-background`
+ * and `text-muted` resolve to the same values the primitives use. Import after
+ * a brand entry point.
+ *
+ *   @import "tailwindcss";
+ *   @import "@loenhart/design/loenhart.css";
+ *   @import "@loenhart/design/tailwind.css";
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-deep: var(--background-deep);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-soft: var(--soft);
+
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-strong: var(--brand-blue-strong);
+  --color-brand-blue-deep: var(--brand-blue-deep);
+  --color-brand-blue-soft: var(--brand-blue-soft);
+
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-strong: var(--brand-red-strong);
+  --color-brand-red-deep: var(--brand-red-deep);
+
+  --font-sans: var(--font-brand-sans);
+  --font-display: var(--font-brand-display);
+  --font-mono: var(--font-brand-mono);
+}

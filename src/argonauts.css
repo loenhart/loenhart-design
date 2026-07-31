@@ -1,0 +1,10 @@
+/* Convenience entry point: the full system on Toronto Argonauts surfaces. */
+@import './tokens/core.css';
+@import './tokens/brand-argonauts.css';
+@import './base.css';
+@import './primitives/typography.css';
+@import './primitives/surfaces.css';
+@import './primitives/controls.css';
+@import './primitives/badges.css';
+@import './primitives/feedback.css';
+@import './primitives/a11y.css';
