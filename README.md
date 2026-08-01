@@ -7,11 +7,10 @@ Next.js, Tailwind 4, or a plain HTML page.
 ## Why this exists
 
 Before this package, the same token set was **copy-pasted into three
-codebases**. A comparison across Lucky Health, the Argonauts athlete app, and
-LTS found 14 tokens byte-identical and 7 already divergent. The divergence was
-mostly deliberate — Argonauts overrides the surface layer for its Night Sky
-brand — but nothing recorded which differences were intentional and which were
-drift.
+codebases**. Comparing them found most tokens byte-identical and a handful
+already divergent. Some of that divergence was deliberate — one property
+overrides the surface layer for its own brand — but nothing recorded which
+differences were intentional and which were drift.
 
 That is the split this package formalises:
 
@@ -78,26 +77,24 @@ Load the faces with `next/font` rather than `fonts.css`, and set
 **1. Only `base.css` may style `body`, `html` or `*`.**
 
 CSS is global. A screen-level stylesheet that sets a `body` rule applies on every
-route, whichever component imported it. This is not hypothetical: two screen
-stylesheets in LTS each opened with
+route, whichever component imported it. This is not hypothetical — a screen sheet
+declaring
 
 ```css
 body { background-color: #406fa1; font-family: 'Helvetica Neue', ...; }
 ```
 
-and because they landed after the design tokens in the bundle, they **overrode
-the brand font across the entire application**. It was invisible in per-screen
-previews, which load only the sheets for the screen under test.
+lands after the design tokens in the bundle and **overrides the brand font across
+the entire application**. It is invisible in per-screen previews, which load only
+the sheets for the screen under test.
 
-Enforce it with a test. LTS has one in
-`frontend/src/styles/stylesheets.test.js`; `npm test` here checks the same rule
-inside this package.
+Enforce it with a test in each consuming app. `npm test` here checks the same
+rule inside this package.
 
 **2. Red is an accent, not a primary.**
 
 `.btn-secondary` is red. It is the *alternative* action. Using it for the main
-action on a screen makes the secondary treatment the loudest thing on the page —
-a mistake made and corrected in the LTS program editor.
+action on a screen makes the secondary treatment the loudest thing on the page.
 
 The hierarchy is `.btn-primary` (blue) → `.btn-secondary` (red) → `.btn-ghost`
 (quiet). Red otherwise appears in focus rings, list markers, warning states and
@@ -106,8 +103,8 @@ destructive hovers.
 **3. Namespace screen-specific classes.**
 
 Generic names like `.exercise-card` or `.form-row` collide across stylesheets in
-a global cascade. LTS shipped a bug where the training log's `.exercise-card`
-silently restyled the program editor's exercise *picker*. Prefix screen classes
+a global cascade: a class named `.exercise-card` on one screen will silently
+restyle a different screen's `.exercise-card`. Prefix screen classes
 (`.picker-card`, `.session-card`) and reserve unprefixed names for this package.
 
 **4. A card that contains form controls should not lift on hover.**
@@ -120,8 +117,8 @@ static. Set `transform: none` on those.
 - **Layout.** Containers, grids and page rhythm stay in each app; they differ too
   much to share usefully.
 - **Navigation.** Header and footer are per-property.
-- **Marketing-only surfaces.** `hero-shell` and `hero-stat` live in the Lucky
-  Health site; nothing else has a hero.
+- **Marketing-only surfaces.** `hero-shell` and `hero-stat` live in the site that
+  needs them; the apps do not have heroes.
 - **Components.** This ships CSS, not React. The apps are on different framework
   versions, and a shared component library would force them to move together.
 
