@@ -112,6 +112,19 @@ restyle a different screen's `.exercise-card`. Prefix screen classes
 `.card:hover` shifts the surface. Under a fingertip mid-entry that is worse than
 static. Set `transform: none` on those.
 
+**5. Text-entry controls are at least 16px on touch screens.**
+
+iOS Safari, and every in-app web view on iOS, zooms the page when a text control
+smaller than 16px takes focus — and the zoom stays after the field loses focus,
+leaving the layout wider than the screen. `.field`, `.field-compact` and bare
+`input` / `select` / `textarea` are floored at 16px under
+`(max-width: 639px), (pointer: coarse)`; desktop keeps the smaller sizes.
+
+Don't fix this with `maximum-scale=1` in the viewport meta: outside Safari (on
+Android, and in iOS web views) it also disables pinch-zoom, which is an
+accessibility regression. If a consumer gives an input
+its own `font-size`, that rule needs the same touch floor.
+
 ## What is deliberately not here
 
 - **Layout.** Containers, grids and page rhythm stay in each app; they differ too
@@ -130,7 +143,8 @@ npm test
 
 Structural guards, no framework: every brand defines the full surface set, core
 defines none of them, only `base.css` touches global elements, every primitive is
-reachable from the entry points, and brand files import after core.
+reachable from the entry points, brand files import after core, and text-entry
+controls are floored at 16px on touch screens.
 
 ## Adding a brand
 
