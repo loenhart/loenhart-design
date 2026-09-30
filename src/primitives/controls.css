@@ -235,3 +235,22 @@ textarea.field {
   outline: 2px solid rgba(221, 90, 109, 0.92);
   outline-offset: 3px;
 }
+
+/* ---------------------------------------------------------- Touch sizing */
+
+/*
+ * iOS Safari (and every WKWebView) zooms the page when a text control under
+ * 16px takes focus, and the zoom outlives the field: the layout stays wider than
+ * the screen until the user pinches back out. The desktop sizes above are all
+ * under 16px, so on touch and narrow screens every text-entry primitive is
+ * floored at 16px. max() keeps a larger root size if the consumer sets one.
+ *
+ * This block must stay LAST in the file. It has the same specificity as the
+ * rules it overrides, so it only wins on source order.
+ */
+@media (max-width: 639px), (pointer: coarse) {
+  .field,
+  .field-compact {
+    font-size: max(16px, 1rem);
+  }
+}
