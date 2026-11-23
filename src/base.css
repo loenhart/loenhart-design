@@ -4,16 +4,17 @@
  * This is the ONLY file in the system permitted to style body, html, :root or
  * the universal selector. CSS is global: a screen-level stylesheet that sets a
  * `body` rule applies on every route in the app, whichever component imported
- * it. That is not hypothetical — two screen stylesheets in LTS each opened with
- * a body rule that overrode the brand font across the entire application.
+ * it, and can silently override the brand font across the whole application.
  *
- * Enforce it with a test. See LTS_app frontend/src/styles/stylesheets.test.js.
+ * Consuming apps should enforce the same rule with a test of their own.
  */
 
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   background: var(--background-deep);
   color-scheme: dark;
 }
@@ -24,26 +25,33 @@ body {
   background: var(--brand-backdrop);
   background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-brand-sans), 'Avenir Next', 'Segoe UI', sans-serif;
+  font-family: var(--font-brand-sans), 'Avenir Next', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Fixed sheen. pointer-events:none so it never intercepts clicks. */
+/* Fixed sheen (--brand-sheen; `none` in brands without one). pointer-events:
+   none so it never intercepts clicks. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.03), transparent 22%),
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04), transparent 20%),
-    radial-gradient(circle at 82% 72%, rgba(201, 70, 89, 0.08), transparent 18%);
+  background: var(--brand-sheen);
   opacity: 0.8;
   z-index: 0;
 }
 
 ::selection {
-  background: rgba(201, 70, 89, 0.34);
+  background: var(--selection-bg);
   color: var(--foreground);
+}
+
+/*
+ * Keyboard focus for anything focusable that no primitive styles. :where()
+ * keeps specificity at zero, so any class rule in a consumer still wins.
+ */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Form controls do not inherit the body font family by default. */
@@ -64,5 +72,25 @@ button {
   select,
   textarea {
     font-size: max(16px, 1rem);
+  }
+}
+
+/*
+ * Reduced motion: every transition and animation becomes effectively instant,
+ * and smooth scrolling stops. Durations are shortened rather than removed so
+ * transitionend / animationend handlers still fire.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

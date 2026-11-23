@@ -18,9 +18,29 @@
   border: 0;
 }
 
+/* "Skip to content": hidden until focused, then pinned top-left. */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -100px;
+  z-index: 100;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-1);
+  background: var(--panel-strong);
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 /*
- * The system leans on gradients and shadows rather than movement, so dropping
- * the hover lift costs nothing.
+ * The system does not depend on movement, so dropping it costs nothing.
+ * base.css also shortens every transition and animation under this query;
+ * this block removes the hover lifts outright.
  */
 @media (prefers-reduced-motion: reduce) {
   .card,
@@ -28,7 +48,11 @@
   .btn-primary,
   .btn-secondary,
   .btn-ghost,
-  .field {
+  .field,
+  .embed-shell,
+  .tab,
+  .segment,
+  .app-nav-link {
     transition: none;
   }
 

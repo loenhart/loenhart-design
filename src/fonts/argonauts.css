@@ -1,0 +1,19 @@
+/*
+ * Self-hosted faces for the Argonauts brand only: Manrope 400-800 and
+ * Cormorant Garamond 500-700, the weights this package loaded before it
+ * stopped using a font CDN. Static Fontsource packages keep the family names
+ * the brand tokens reference ('Manrope', 'Cormorant Garamond').
+ *
+ * Needs a bundler (Vite, webpack, Astro, Next.js): the @import paths are bare
+ * npm specifiers, which a browser cannot resolve when this file is served as
+ * is. Without a bundler, link the Fontsource CSS files from node_modules
+ * yourself.
+ */
+@import '@fontsource/manrope/400.css';
+@import '@fontsource/manrope/500.css';
+@import '@fontsource/manrope/600.css';
+@import '@fontsource/manrope/700.css';
+@import '@fontsource/manrope/800.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import '@fontsource/cormorant-garamond/700.css';

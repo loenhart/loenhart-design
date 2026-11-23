@@ -1,19 +1,30 @@
 /*
  * Core design tokens — shared by every Loenhart Health property.
  *
- * These are the values that were already byte-identical across the Lucky Health
- * marketing site, the Argonauts athlete app, and LTS. They define the brand's
- * *language*: blue for depth and primary action, red reserved for accents,
- * markers, focus rings and warning states.
+ * Four groups live here:
  *
- * Surfaces are NOT here. Each property sets its own background and panel
- * colours, because that is the one axis that legitimately varies between brands
- * — see tokens/brand-*.css. Everything in this file must be identical
- * everywhere; if a property needs to change one of these, it belongs in a brand
- * file instead.
+ *   1. The shared language: text, hairlines, the blue and red ramps, shadow,
+ *      type stack, motion. These are the DEFAULTS. A brand file may restate
+ *      any of them (brand-loenhart.css does, for the lab-notebook direction);
+ *      a brand that restates none of them gets exactly these values.
+ *   2. The lab-notebook palette: ink, paper, the annotation pen, plotted data.
+ *      Named colours, identical everywhere, so any brand can opt into the
+ *      .surface-ink / .surface-paper / .surface-grid utilities.
+ *   3. Scales and semantic aliases: spacing, radii, type sizes, and the
+ *      generic names (--text, --color-accent, --danger...) that consuming apps
+ *      already reference.
+ *   4. Component tokens: what each primitive reads (card, button, field...).
+ *      The defaults reproduce the original glass-and-gradient look; a brand
+ *      restyles a primitive by restating its component tokens, never by
+ *      editing the primitive.
+ *
+ * Surfaces (--background, the panel ramp, the backdrop) are NOT here. Each
+ * brand sets its own — see tokens/brand-*.css.
  */
 
 :root {
+  /* ------------------------------------------------ 1. Shared language */
+
   /* Text */
   --foreground: #f7f9fd;
   --muted: #c8d3e2;
@@ -23,15 +34,14 @@
   --line: rgba(207, 224, 245, 0.14);
   --line-strong: rgba(207, 224, 245, 0.28);
 
-  /* Brand blue — depth, primary actions */
+  /* Brand blue — depth, data */
   --brand-blue: #2c5785;
   --brand-blue-strong: #3d709f;
   --brand-blue-deep: #173353;
 
   /*
-   * Brand red — accents, markers, focus rings, warning states, light glow.
-   * Never the default for a primary action: using it there makes the secondary
-   * treatment the loudest thing on the page.
+   * Brand red — accents, markers, focus rings, warning states.
+   * Red marks things; it does not fill large areas.
    */
   --brand-red: #c94659;
   --brand-red-strong: #dd5a6d;
@@ -40,13 +50,322 @@
   --brand-red-glow: rgba(201, 70, 89, 0.3);
 
   --shadow: 0 26px 80px rgba(1, 6, 16, 0.48);
+  /* Menus, popovers, toasts: things that float above the page. */
+  --shadow-overlay: 0 18px 48px rgba(1, 6, 16, 0.5);
 
   /* Type stack. Load the faces via fonts.css or the framework's font loader. */
   --font-brand-sans: 'Manrope';
   --font-brand-display: 'Cormorant Garamond';
   --font-brand-mono: 'Geist Mono';
 
-  /* Motion. The system leans on gradients and shadows, not movement. */
+  /* Motion. Kept short; base.css drops it under prefers-reduced-motion. */
   --transition-fast: 160ms ease;
   --transition-base: 180ms ease;
+
+  /* Page sheen layered over the backdrop by base.css. `none` turns it off. */
+  --brand-sheen:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.03), transparent 22%),
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04), transparent 20%),
+    radial-gradient(circle at 82% 72%, rgba(201, 70, 89, 0.08), transparent 18%);
+  --selection-bg: rgba(201, 70, 89, 0.34);
+
+  /* ------------------------------------------- 2. Lab-notebook palette */
+
+  /* Ink: the lab. Deep navy for data, tools, dense app screens. */
+  --ink: #0a1526;
+  --ink-deep: #060e1b;
+  --ink-raised: #0f1f37;
+  --ink-line: rgb(214 226 243 / 0.14);
+  --ink-line-strong: rgb(214 226 243 / 0.42);
+  --ink-grid: rgb(214 226 243 / 0.05);
+  --on-ink: #eef2f8;
+  --on-ink-muted: #a9b9cd;
+
+  /* Paper: the notebook. Warm off-white for reading and explanation. */
+  --paper: #f5f0e7;
+  --paper-raised: #fbf8f2;
+  --paper-line: rgb(26 34 48 / 0.12);
+  --paper-line-strong: rgb(26 34 48 / 0.45);
+  --on-paper: #18202d;
+  --on-paper-muted: #545e6d;
+
+  /* The annotation pen. --pen on ink, --pen-ink on paper and as a fill. */
+  --pen: #e46b78;
+  --pen-ink: #a3303d;
+  --pen-ink-hover: #8c2733;
+
+  /* Plotted data: lines, success, informational states. */
+  --data: #6f9fd0;
+  --data-paper: #2f5f8f;
+
+  /* Caution: the one non-brand hue, for warnings that are not errors. */
+  --caution: #f5d38f;
+  --caution-paper: #7a5510;
+
+  /* ---------------------------------------- 3. Scales and aliases */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 3rem;
+  --space-12: 4rem;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-1: 0.375rem;
+  --radius-2: 0.5rem;
+  --radius-3: 0.75rem;
+  --radius-pill: 9999px;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.6rem;
+  --text-2xl: clamp(1.85rem, 3.6vw, 2.75rem);
+  --text-3xl: clamp(2.5rem, 6.4vw, 5.25rem);
+  --leading-tight: 1.08;
+  --leading-body: 1.6;
+  --tracking-label: 0.08em;
+
+  /* Grid motif cell size (.surface-grid). */
+  --grid-size: 48px;
+
+  /*
+   * Generic names consuming apps already reference. Defined so a stylesheet
+   * that wrote var(--text) or var(--color-accent, #...) resolves to the brand
+   * instead of silently using its hard-coded fallback.
+   */
+  --text: var(--foreground);
+  --color-text: var(--foreground);
+  --color-text-muted: var(--soft);
+  --color-surface: var(--panel-strong);
+  --color-surface-muted: rgb(214 226 243 / 0.06);
+  --color-accent: var(--brand-red-strong);
+  --accent: var(--foreground);
+  --font-mono: var(--font-brand-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Status hues. Text-safe on the brand's panels. */
+  --status-ok: var(--brand-blue-soft);
+  --status-warn: var(--caution);
+  --status-danger: var(--brand-red-strong);
+  --color-success: var(--status-ok);
+  --color-warning: var(--status-warn);
+  --danger: var(--status-danger);
+
+  /* ------------------------------------------------ 4. Component tokens */
+
+  /* Focus: one ring everywhere. */
+  --focus-ring: rgba(221, 90, 109, 0.92);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 3px;
+
+  /* Titles */
+  --title-weight: 600;
+  --page-title-tracking: -0.045em;
+  --page-title-leading: 0.96;
+  --section-title-tracking: -0.036em;
+  --section-title-leading: 1.02;
+
+  /* Kicker / label voice */
+  --kicker-size: 0.75rem;
+  --kicker-weight: 600;
+  --kicker-tracking: 0.16em;
+  --kicker-color: rgba(255, 255, 255, 0.58);
+
+  /* Card */
+  --card-radius: 1.35rem;
+  --card-border: var(--line);
+  --card-border-hover: rgba(61, 112, 159, 0.22);
+  --card-bg: linear-gradient(180deg, rgba(14, 29, 51, 0.94), rgba(8, 19, 35, 0.88));
+  --card-bg-hover: linear-gradient(180deg, rgba(16, 33, 57, 0.95), rgba(9, 21, 38, 0.9));
+  --card-shadow: var(--shadow);
+  --card-shadow-hover: 0 28px 84px rgba(1, 6, 16, 0.5);
+  --card-blur: blur(18px);
+  --card-lift: translateY(-3px);
+
+  /* Callout. --callout-edge is the leading (left) border. */
+  --callout-radius: 1.2rem;
+  --callout-border: 1px solid rgba(201, 70, 89, 0.18);
+  --callout-edge: 1px solid rgba(201, 70, 89, 0.18);
+  --callout-bg: linear-gradient(135deg, rgba(201, 70, 89, 0.08), rgba(61, 112, 159, 0.08), rgba(11, 24, 42, 0.9));
+  --callout-color: rgba(255, 255, 255, 0.84);
+  --callout-padding: 1rem;
+  --callout-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 36px rgba(1, 6, 16, 0.16);
+
+  /* Embed shell (a bounded option inside a card) */
+  --embed-radius: 1rem;
+  --embed-border: var(--line);
+  --embed-border-hover: var(--line);
+  --embed-border-selected: var(--line);
+  --embed-bg: linear-gradient(180deg, rgba(17, 34, 58, 0.94), rgba(10, 21, 37, 0.88));
+  --embed-bg-selected: linear-gradient(180deg, rgba(17, 34, 58, 0.94), rgba(10, 21, 37, 0.88));
+  --embed-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* Pill */
+  --pill-min-height: 2.15rem;
+  --pill-padding: 0.45rem 0.9rem;
+  --pill-radius: 9999px;
+  --pill-border: 1px solid rgba(201, 70, 89, 0.24);
+  --pill-bg: linear-gradient(135deg, rgba(201, 70, 89, 0.14), rgba(61, 112, 159, 0.14), rgba(15, 30, 52, 0.82));
+  --pill-color: var(--foreground);
+  --pill-size: 0.76rem;
+  --pill-weight: 600;
+  --pill-tracking: 0.12em;
+  --pill-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 26px rgba(1, 6, 16, 0.18);
+  /* The pen dot before a pill's text. `none` hides it. */
+  --pill-marker: none;
+  --pill-marker-color: transparent;
+
+  /* Surface badge */
+  --badge-radius: 9999px;
+  --badge-border: 1px solid rgba(201, 70, 89, 0.24);
+  --badge-bg: linear-gradient(135deg, rgba(61, 112, 159, 0.22), rgba(201, 70, 89, 0.16), rgba(16, 34, 58, 0.92));
+  --badge-color: var(--foreground);
+  --badge-size: 0.72rem;
+  --badge-weight: 700;
+  --badge-tracking: 0.12em;
+  --badge-padding: 0.35rem 0.85rem;
+  --badge-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Buttons (shared geometry) */
+  --btn-radius: 9999px;
+  --btn-min-height: 3.25rem;
+  --btn-padding: 0.82rem 1.2rem;
+  --btn-size: 0.92rem;
+  --btn-weight: 600;
+  --btn-tracking: 0.01em;
+  --btn-lift: translateY(-1px);
+  --btn-gap: 0;
+
+  /* .btn-primary — the one main action */
+  --btn-primary-border: 1px solid rgba(107, 160, 214, 0.34);
+  --btn-primary-border-hover: rgba(134, 183, 231, 0.48);
+  --btn-primary-bg: linear-gradient(135deg, var(--brand-blue-soft), var(--brand-blue-strong), var(--brand-blue-deep));
+  --btn-primary-bg-hover: linear-gradient(135deg, #6a96c1, var(--brand-blue-strong), #1a426b);
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow:
+    0 18px 38px rgba(12, 34, 58, 0.46),
+    0 0 0 1px rgba(61, 112, 159, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --btn-primary-shadow-hover:
+    0 22px 46px rgba(12, 34, 58, 0.54),
+    0 0 0 1px rgba(61, 112, 159, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --btn-primary-filter-hover: saturate(1.06);
+
+  /* .btn-secondary — the alternative action */
+  --btn-secondary-border: 1px solid rgba(221, 90, 109, 0.34);
+  --btn-secondary-border-hover: rgba(244, 132, 149, 0.48);
+  --btn-secondary-bg: linear-gradient(135deg, rgba(221, 90, 109, 0.94), rgba(168, 58, 79, 0.96), rgba(127, 34, 51, 0.98));
+  --btn-secondary-bg-hover: linear-gradient(135deg, rgba(234, 106, 125, 0.98), rgba(187, 66, 88, 0.98), rgba(137, 36, 55, 0.98));
+  --btn-secondary-color: #ffffff;
+  --btn-secondary-shadow:
+    0 14px 30px rgba(58, 10, 21, 0.32),
+    0 0 0 1px rgba(201, 70, 89, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --btn-secondary-shadow-hover:
+    0 18px 38px rgba(58, 10, 21, 0.38),
+    0 0 0 1px rgba(201, 70, 89, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+  /* .btn-ghost — quiet, dense layouts */
+  --btn-ghost-radius: 0.75rem;
+  --btn-ghost-border: var(--line);
+  --btn-ghost-border-hover: rgba(116, 163, 209, 0.5);
+  --btn-ghost-bg: linear-gradient(180deg, rgba(22, 46, 76, 0.72), rgba(12, 26, 45, 0.82));
+  --btn-ghost-bg-hover: linear-gradient(180deg, rgba(28, 58, 92, 0.86), rgba(16, 34, 58, 0.9));
+  --btn-ghost-color: rgba(255, 255, 255, 0.84);
+  --btn-ghost-color-hover: #ffffff;
+
+  /* Text link */
+  --link-color: rgba(215, 235, 255, 0.92);
+  --link-color-hover: #ffffff;
+  --link-underline: rgba(201, 70, 89, 0.5);
+  --link-underline-hover: var(--brand-red-strong);
+  --link-underline-thickness: auto;
+  --link-underline-offset: 3px;
+
+  /* Icon button */
+  --icon-btn-radius: 0.55rem;
+  --icon-btn-color: rgba(255, 255, 255, 0.5);
+  --icon-btn-color-hover: #ffe7ea;
+  --icon-btn-bg-hover: rgba(201, 70, 89, 0.18);
+  --icon-btn-border-hover: rgba(221, 90, 109, 0.34);
+
+  /* Field */
+  --field-radius: 1rem;
+  --field-min-height: 3.25rem;
+  --field-padding: 0.86rem 1rem;
+  --field-size: 0.95rem;
+  --field-border: rgba(96, 132, 170, 0.28);
+  --field-border-hover: rgba(124, 166, 207, 0.4);
+  --field-border-focus: rgba(116, 163, 209, 0.8);
+  --field-border-invalid: rgba(221, 90, 109, 0.6);
+  --field-border-invalid-focus: rgba(221, 90, 109, 0.85);
+  --field-bg: linear-gradient(180deg, rgba(16, 35, 58, 0.94), rgba(9, 22, 40, 0.98));
+  --field-bg-focus: linear-gradient(180deg, rgba(19, 40, 66, 0.96), rgba(10, 24, 44, 0.99));
+  --field-color: var(--foreground);
+  --field-placeholder: rgba(200, 211, 226, 0.52);
+  --field-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 0 rgba(3, 9, 20, 0.14);
+  --field-shadow-focus:
+    0 0 0 4px rgba(61, 112, 159, 0.18),
+    0 0 0 1px rgba(201, 70, 89, 0.18),
+    0 14px 30px rgba(1, 6, 16, 0.24);
+  --field-shadow-invalid-focus:
+    0 0 0 4px rgba(201, 70, 89, 0.18),
+    0 14px 30px rgba(1, 6, 16, 0.24);
+  --field-compact-radius: 0.7rem;
+  --field-compact-min-height: 2.6rem;
+  --field-compact-padding: 0.45rem 0.6rem;
+  --field-compact-size: 0.9rem;
+
+  /* Status messages. *-edge is the leading (left) border. */
+  --status-radius: 1rem;
+  --status-padding: 0.85rem 1rem;
+  --status-error-border: 1px solid rgba(221, 90, 109, 0.28);
+  --status-error-edge: 1px solid rgba(221, 90, 109, 0.28);
+  --status-error-bg: linear-gradient(135deg, rgba(93, 25, 38, 0.7), rgba(52, 16, 26, 0.82));
+  --status-error-color: #ffd4db;
+  --status-success-border: 1px solid rgba(116, 163, 209, 0.28);
+  --status-success-edge: 1px solid rgba(116, 163, 209, 0.28);
+  --status-success-bg: linear-gradient(135deg, rgba(31, 63, 97, 0.72), rgba(13, 32, 54, 0.84));
+  --status-success-color: #d7ebff;
+  --notice-warning-border: 1px solid rgba(221, 90, 109, 0.34);
+  --notice-warning-edge: 1px solid rgba(221, 90, 109, 0.34);
+  --notice-warning-bg: linear-gradient(135deg, rgba(88, 22, 35, 0.88), rgba(50, 15, 25, 0.92));
+  --notice-warning-color: #ffe7ea;
+  --notice-warning-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 36px rgba(58, 10, 21, 0.18);
+
+  /* List marker */
+  --marker-bg: linear-gradient(180deg, #db5a6c, #9f2f44);
+  --marker-ring: 0 0 0 4px rgba(201, 70, 89, 0.12);
+
+  /* App primitives (tables, tabs, toasts, nav) */
+  --table-head-color: var(--soft);
+  --table-scroll-max-height: 70vh;
+  /* Pinned cells must be opaque or scrolled content shows through them: the
+   * panel tint layered over the page background, which every brand keeps
+   * opaque (Argonauts' --panel is translucent). */
+  --table-sticky-bg: linear-gradient(var(--panel), var(--panel)), var(--background);
+  --table-row-hover: rgb(214 226 243 / 0.04);
+  --table-row-selected: rgb(214 226 243 / 0.07);
+  --tab-active-edge: var(--brand-red-strong);
+  --segment-active-bg: rgb(214 226 243 / 0.1);
+  --toast-bg: var(--panel-strong);
+  --nav-bg: rgba(5, 11, 21, 0.84);
+  --nav-blur: blur(20px);
 }

@@ -1,23 +1,21 @@
 /*
- * Bounded panels.
+ * Bounded panels and surface utilities.
  *
- * .card is the main repeated surface: navy glass gradient, hairline border,
- * blur, large dark shadow. Use it for real content modules — forms, sidebars,
- * article cards.
- *
- * Do not nest a .card inside a .card. Reach for .callout-panel (an emphasised
- * message) or .embed-shell (a bounded interactive option) instead.
+ * .card is the main repeated surface. Use it for real content modules — forms,
+ * sidebars, article cards. Do not nest a .card inside a .card; reach for
+ * .callout-panel (an emphasised message) or .embed-shell (a bounded
+ * interactive option) instead.
  *
  * A card containing form controls should set `transform: none` on :hover — a
  * surface that shifts under a fingertip mid-entry is worse than a static one.
  */
 
 .card {
-  border: 1px solid var(--line);
-  border-radius: 1.35rem;
-  background: linear-gradient(180deg, rgba(14, 29, 51, 0.94), rgba(8, 19, 35, 0.88));
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--card-blur);
   transition:
     transform var(--transition-base),
     box-shadow var(--transition-base),
@@ -26,37 +24,383 @@
 }
 
 .card:hover {
-  border-color: rgba(61, 112, 159, 0.22);
-  background: linear-gradient(180deg, rgba(16, 33, 57, 0.95), rgba(9, 21, 38, 0.9));
-  box-shadow: 0 28px 84px rgba(1, 6, 16, 0.5);
+  border-color: var(--card-border-hover);
+  background: var(--card-bg-hover);
+  box-shadow: var(--card-shadow-hover);
 }
 
-/* Adds the hover lift. Only for cards that are themselves clickable. */
+/* Adds the hover lift (where the brand has one). Only for clickable cards. */
 .card-interactive {
   position: relative;
 }
 
 .card-interactive:hover,
 .card-interactive:focus-within {
-  transform: translateY(-3px);
+  transform: var(--card-lift);
 }
 
 /* An emphasised message inside a section or form. */
 .callout-panel {
-  border-radius: 1.2rem;
-  border: 1px solid rgba(201, 70, 89, 0.18);
-  background: linear-gradient(135deg, rgba(201, 70, 89, 0.08), rgba(61, 112, 159, 0.08), rgba(11, 24, 42, 0.9));
-  padding: 1rem;
-  color: rgba(255, 255, 255, 0.84);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 18px 36px rgba(1, 6, 16, 0.16);
+  border: var(--callout-border);
+  border-left: var(--callout-edge);
+  border-radius: var(--callout-radius);
+  background: var(--callout-bg);
+  padding: var(--callout-padding);
+  color: var(--callout-color);
+  box-shadow: var(--callout-shadow);
 }
 
-/* A bounded interactive option inside a larger card. */
+/* A bounded interactive option inside a larger card, e.g. a quiz tile. */
 .embed-shell {
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(17, 34, 58, 0.94), rgba(10, 21, 37, 0.88));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--embed-border);
+  border-radius: var(--embed-radius);
+  background: var(--embed-bg);
+  box-shadow: var(--embed-shadow);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.embed-shell:hover {
+  border-color: var(--embed-border-hover);
+}
+
+.embed-shell[aria-pressed='true'],
+.embed-shell[aria-checked='true'],
+.embed-shell[aria-selected='true'] {
+  border-color: var(--embed-border-selected);
+  background: var(--embed-bg-selected);
+}
+
+/* ---------------------------------------------------------------- Rows */
+
+/* A spec-sheet row: facts set like instrument readouts (▸ MSc ...). */
+.spec-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.spec-row > * {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.spec-row > *::before {
+  content: '▸';
+  color: var(--brand-red-strong);
+}
+
+/* Ruled list, like a notebook's numbered entries. */
+.ruled > * + * {
+  border-top: 1px solid var(--line);
+}
+
+/* ------------------------------------------------------------ Surfaces */
+/*
+ * Opt-in regions in the lab-notebook palette. Each one restates the
+ * scope-dependent tokens, so every primitive inside it (card, pill, button,
+ * field, link, status...) re-colours without a modifier class.
+ *
+ * Aliases defined on :root (e.g. --text: var(--foreground)) resolve where they
+ * are declared, so a region that changes --foreground restates them too.
+ */
+
+.surface-ink,
+.surface-grid {
+  --foreground: var(--on-ink);
+  --muted: var(--on-ink-muted);
+  --line: var(--ink-line);
+  --line-strong: var(--ink-line-strong);
+  --text: var(--on-ink);
+  --color-text: var(--on-ink);
+
+  /* Restate every component token .surface-paper changes, at its ink value,
+   * so an ink region nested inside a paper one does not inherit paper
+   * cards, fields, buttons or status colours. Kept in step by a test. */
+  --soft: #90a4bd;
+  --panel: var(--ink-raised);
+  --panel-strong: #112340;
+  --panel-soft: #132845;
+  --panel-contrast: #16294a;
+  --brand-red: var(--pen);
+  --brand-red-strong: var(--pen);
+  --brand-blue-soft: var(--data);
+  --color-text-muted: var(--soft);
+  --color-accent: var(--brand-red-strong);
+  --color-surface: var(--panel-strong);
+  --color-surface-muted: rgb(214 226 243 / 0.06);
+  --accent: var(--foreground);
+  --status-ok: var(--data);
+  --status-warn: var(--caution);
+  --status-danger: var(--pen);
+  --color-success: var(--status-ok);
+  --color-warning: var(--status-warn);
+  --danger: var(--status-danger);
+  --focus-ring: var(--pen);
+  --kicker-color: var(--on-ink-muted);
+  --card-border: var(--ink-line);
+  --card-border-hover: var(--ink-line-strong);
+  --card-bg: var(--ink-raised);
+  --card-bg-hover: var(--ink-raised);
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-blur: none;
+  --callout-edge: 2px solid var(--pen);
+  --callout-border: 0 solid transparent;
+  --callout-bg: rgb(228 107 120 / 0.08);
+  --callout-color: var(--on-ink);
+  --callout-shadow: none;
+  --embed-border: var(--ink-line-strong);
+  --embed-border-hover: var(--on-ink-muted);
+  --embed-border-selected: var(--pen);
+  --embed-bg: rgb(10 21 38 / 0.6);
+  --embed-bg-selected: rgb(228 107 120 / 0.12);
+  --embed-shadow: none;
+  --pill-color: var(--on-ink-muted);
+  --pill-marker-color: var(--pen);
+  --badge-color: var(--on-ink-muted);
+  --badge-border: 1px solid var(--ink-line-strong);
+  --badge-bg: transparent;
+  --badge-shadow: none;
+  --btn-secondary-border: 1px solid var(--ink-line-strong);
+  --btn-secondary-border-hover: var(--on-ink);
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: transparent;
+  --btn-secondary-color: var(--on-ink);
+  --btn-secondary-shadow: none;
+  --btn-secondary-shadow-hover: none;
+  --btn-ghost-border: var(--ink-line);
+  --btn-ghost-border-hover: var(--ink-line-strong);
+  --btn-ghost-bg: transparent;
+  --btn-ghost-bg-hover: rgb(214 226 243 / 0.06);
+  --btn-ghost-color: var(--on-ink-muted);
+  --btn-ghost-color-hover: var(--on-ink);
+  --link-color: currentColor;
+  --link-color-hover: currentColor;
+  --link-underline: var(--pen);
+  --link-underline-hover: currentColor;
+  --icon-btn-color: var(--on-ink-muted);
+  --icon-btn-color-hover: #ffdfe3;
+  --icon-btn-bg-hover: rgb(228 107 120 / 0.12);
+  --icon-btn-border-hover: rgb(228 107 120 / 0.4);
+  --field-border: var(--ink-line-strong);
+  --field-border-hover: var(--on-ink-muted);
+  --field-border-focus: var(--pen);
+  --field-border-invalid: var(--pen);
+  --field-border-invalid-focus: var(--pen);
+  --field-bg: rgb(10 21 38 / 0.6);
+  --field-bg-focus: rgb(10 21 38 / 0.85);
+  --field-color: var(--on-ink);
+  --field-placeholder: rgb(169 185 205 / 0.75);
+  --field-shadow: none;
+  --field-shadow-focus: none;
+  --status-error-border: 0 solid transparent;
+  --status-error-edge: 2px solid var(--pen);
+  --status-error-bg: rgb(228 107 120 / 0.1);
+  --status-error-color: #ffdfe3;
+  --status-success-border: 0 solid transparent;
+  --status-success-edge: 2px solid var(--data);
+  --status-success-bg: rgb(111 159 208 / 0.12);
+  --status-success-color: #dcebfb;
+  --notice-warning-border: 0 solid transparent;
+  --notice-warning-edge: 2px solid var(--caution);
+  --notice-warning-bg: rgb(245 211 143 / 0.08);
+  --notice-warning-color: var(--caution);
+  --notice-warning-shadow: none;
+  --marker-bg: var(--pen);
+  --marker-ring: none;
+  --table-head-color: var(--on-ink-muted);
+  --table-row-hover: rgb(214 226 243 / 0.04);
+  --table-row-selected: rgb(214 226 243 / 0.07);
+  --tab-active-edge: var(--pen);
+  --segment-active-bg: rgb(214 226 243 / 0.1);
+  --toast-bg: var(--ink-raised);
+  --nav-bg: rgb(10 21 38 / 0.92);
+  --table-sticky-bg: linear-gradient(var(--panel), var(--panel)), var(--background);
+  /* Colour-bearing component tokens at their lab-notebook values, so an ink
+   * region reads the same whatever brand the page uses (gate-checked). */
+  --brand-blue: var(--data-paper);
+  --brand-blue-strong: #3d6f9f;
+  --brand-blue-deep: #173353;
+  --brand-red-deep: var(--pen-ink);
+  --brand-red-soft: rgb(228 107 120 / 0.12);
+  --brand-red-glow: rgb(228 107 120 / 0.3);
+  --shadow: 0 1px 0 rgb(2 7 16 / 0.35);
+  --shadow-overlay: 0 18px 48px rgb(2 7 16 / 0.55);
+  --brand-sheen: none;
+  --selection-bg: rgb(228 107 120 / 0.34);
+  --focus-ring-offset: 3px;
+  --pill-border: 0 solid transparent;
+  --pill-bg: transparent;
+  --pill-shadow: none;
+  --btn-primary-border: 1px solid transparent;
+  --btn-primary-border-hover: transparent;
+  --btn-primary-bg: var(--pen-ink);
+  --btn-primary-bg-hover: var(--pen-ink-hover);
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: none;
+  --btn-primary-shadow-hover: none;
+  --btn-primary-filter-hover: none;
+  --field-shadow-invalid-focus: 0 0 0 3px rgb(228 107 120 / 0.18);
+  --background: var(--ink);
+  --brand-backdrop: var(--ink);
+  color-scheme: dark;
+  background-color: var(--ink);
+  color: var(--on-ink);
+}
+
+/* Faint measurement grid: the lab's graph paper. Decorative, ink only. */
+.surface-grid {
+  background-image:
+    linear-gradient(var(--ink-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ink-grid) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: -1px -1px;
+}
+
+.surface-paper {
+  --foreground: var(--on-paper);
+  --muted: var(--on-paper-muted);
+  --soft: var(--on-paper-muted);
+  --line: var(--paper-line);
+  --line-strong: var(--paper-line-strong);
+  --panel: var(--paper-raised);
+  --panel-strong: var(--paper-raised);
+  --panel-soft: var(--paper-raised);
+  --panel-contrast: var(--paper-raised);
+  --brand-red: var(--pen-ink);
+  --brand-red-strong: var(--pen-ink);
+  --brand-blue-soft: var(--data-paper);
+  --text: var(--on-paper);
+  --color-text: var(--on-paper);
+  --color-text-muted: var(--on-paper-muted);
+  --color-accent: var(--pen-ink);
+  --color-surface: var(--paper-raised);
+  --color-surface-muted: rgb(26 34 48 / 0.05);
+  --accent: var(--on-paper);
+  --status-ok: var(--data-paper);
+  --status-warn: var(--caution-paper);
+  --status-danger: var(--pen-ink);
+  --color-success: var(--data-paper);
+  --color-warning: var(--caution-paper);
+  --danger: var(--pen-ink);
+  --focus-ring: var(--pen-ink);
+
+  --kicker-color: var(--on-paper-muted);
+  --card-border: var(--paper-line);
+  --card-border-hover: var(--paper-line-strong);
+  --card-bg: var(--paper-raised);
+  --card-bg-hover: var(--paper-raised);
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-blur: none;
+  --callout-edge: 2px solid var(--pen-ink);
+  --callout-border: 0 solid transparent;
+  --callout-bg: rgb(163 48 61 / 0.06);
+  --callout-color: var(--on-paper);
+  --callout-shadow: none;
+  --embed-border: var(--paper-line-strong);
+  --embed-border-hover: var(--on-paper-muted);
+  --embed-border-selected: var(--pen-ink);
+  --embed-bg: var(--paper-raised);
+  --embed-bg-selected: rgb(163 48 61 / 0.08);
+  --embed-shadow: none;
+  --pill-color: var(--on-paper-muted);
+  --pill-marker-color: var(--pen-ink);
+  --badge-color: var(--on-paper-muted);
+  --badge-border: 1px solid var(--paper-line-strong);
+  --badge-bg: transparent;
+  --badge-shadow: none;
+  --btn-secondary-border: 1px solid var(--paper-line-strong);
+  --btn-secondary-border-hover: var(--on-paper);
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: transparent;
+  --btn-secondary-color: var(--on-paper);
+  --btn-secondary-shadow: none;
+  --btn-secondary-shadow-hover: none;
+  --btn-ghost-border: var(--paper-line);
+  --btn-ghost-border-hover: var(--paper-line-strong);
+  --btn-ghost-bg: transparent;
+  --btn-ghost-bg-hover: rgb(26 34 48 / 0.05);
+  --btn-ghost-color: var(--on-paper-muted);
+  --btn-ghost-color-hover: var(--on-paper);
+  --link-color: currentColor;
+  --link-color-hover: currentColor;
+  --link-underline: var(--pen-ink);
+  --link-underline-hover: currentColor;
+  --icon-btn-color: var(--on-paper-muted);
+  --icon-btn-color-hover: var(--pen-ink);
+  --icon-btn-bg-hover: rgb(163 48 61 / 0.08);
+  --icon-btn-border-hover: rgb(163 48 61 / 0.3);
+  /* 0.55, not --paper-line-strong (0.45): a field boundary needs 3:1. */
+  --field-border: rgb(26 34 48 / 0.55);
+  --field-border-hover: var(--on-paper-muted);
+  --field-border-focus: var(--pen-ink);
+  --field-border-invalid: var(--pen-ink);
+  --field-border-invalid-focus: var(--pen-ink);
+  --field-bg: var(--paper-raised);
+  --field-bg-focus: #ffffff;
+  --field-color: var(--on-paper);
+  --field-placeholder: rgb(84 94 109 / 0.9);
+  --field-shadow: none;
+  --field-shadow-focus: none;
+  --status-error-border: 0 solid transparent;
+  --status-error-edge: 2px solid var(--pen-ink);
+  --status-error-bg: rgb(163 48 61 / 0.07);
+  --status-error-color: #6e1c26;
+  --status-success-border: 0 solid transparent;
+  --status-success-edge: 2px solid var(--data-paper);
+  --status-success-bg: rgb(47 95 143 / 0.08);
+  --status-success-color: #173353;
+  --notice-warning-border: 0 solid transparent;
+  --notice-warning-edge: 2px solid var(--caution-paper);
+  --notice-warning-bg: rgb(122 85 16 / 0.08);
+  --notice-warning-color: #4d3608;
+  --notice-warning-shadow: none;
+  --marker-bg: var(--pen-ink);
+  --marker-ring: none;
+  --table-head-color: var(--on-paper-muted);
+  --table-row-hover: rgb(26 34 48 / 0.04);
+  --table-row-selected: rgb(26 34 48 / 0.07);
+  --tab-active-edge: var(--pen-ink);
+  --segment-active-bg: rgb(26 34 48 / 0.08);
+  --toast-bg: var(--paper-raised);
+  --table-sticky-bg: linear-gradient(var(--panel), var(--panel)), var(--background);
+  --nav-bg: rgb(251 248 242 / 0.94);
+  /* Colour-bearing component tokens at their lab-notebook values, so a paper
+   * region reads the same whatever brand the page uses (gate-checked). */
+  --brand-blue: var(--data-paper);
+  --brand-blue-strong: #3d6f9f;
+  --brand-blue-deep: #173353;
+  --brand-red-deep: var(--pen-ink);
+  --brand-red-soft: rgb(228 107 120 / 0.12);
+  --brand-red-glow: rgb(228 107 120 / 0.3);
+  --shadow: 0 1px 0 rgb(2 7 16 / 0.35);
+  --shadow-overlay: 0 18px 48px rgb(2 7 16 / 0.55);
+  --brand-sheen: none;
+  --selection-bg: rgb(228 107 120 / 0.34);
+  --focus-ring-offset: 3px;
+  --pill-border: 0 solid transparent;
+  --pill-bg: transparent;
+  --pill-shadow: none;
+  --btn-primary-border: 1px solid transparent;
+  --btn-primary-border-hover: transparent;
+  --btn-primary-bg: var(--pen-ink);
+  --btn-primary-bg-hover: var(--pen-ink-hover);
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: none;
+  --btn-primary-shadow-hover: none;
+  --btn-primary-filter-hover: none;
+  --field-shadow-invalid-focus: 0 0 0 3px rgb(228 107 120 / 0.18);
+  --background: var(--paper);
+  --brand-backdrop: var(--paper);
+  color-scheme: light;
+  background-color: var(--paper);
+  color: var(--on-paper);
 }

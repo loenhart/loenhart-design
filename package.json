@@ -1,11 +1,13 @@
 {
   "name": "@loenhart/design",
-  "version": "0.1.0",
-  "description": "Shared design system for Loenhart Health properties — tokens, primitives and per-brand surfaces.",
+  "version": "0.2.0",
+  "description": "Shared design system for Loenhart Health properties \u2014 the lab-notebook tokens, primitives and per-brand surfaces.",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "exports": {
     ".": "./src/index.css",
     "./loenhart.css": "./src/loenhart.css",
@@ -16,9 +18,18 @@
     "./tokens/core.css": "./src/tokens/core.css",
     "./brands/loenhart.css": "./src/tokens/brand-loenhart.css",
     "./brands/argonauts.css": "./src/tokens/brand-argonauts.css",
-    "./primitives/*": "./src/primitives/*"
+    "./primitives/*": "./src/primitives/*",
+    "./fonts/loenhart.css": "./src/fonts/loenhart.css",
+    "./fonts/argonauts.css": "./src/fonts/argonauts.css"
   },
   "scripts": {
     "test": "node test/tokens.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0"
   }
 }

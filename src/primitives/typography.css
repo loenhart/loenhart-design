@@ -1,26 +1,35 @@
 /*
- * Editorial type scale.
+ * Type.
  *
- * Cormorant Garamond for display headings, Manrope for everything else, Geist
- * Mono for figures that should align in a column (loads, tempo, set counts).
+ * Display face for headings, sans for text, mono for labels and for figures
+ * that must align in a column (loads, tempo, set counts). The faces come from
+ * the brand (--font-brand-*); the shapes come from component tokens.
  */
 
 .page-title {
   font-family: var(--font-brand-display), Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 0.96;
+  font-optical-sizing: auto;
+  font-weight: var(--title-weight);
+  letter-spacing: var(--page-title-tracking);
+  line-height: var(--page-title-leading);
   text-wrap: balance;
   margin: 0;
 }
 
 .section-title {
   font-family: var(--font-brand-display), Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.036em;
-  line-height: 1.02;
+  font-optical-sizing: auto;
+  font-weight: var(--title-weight);
+  letter-spacing: var(--section-title-tracking);
+  line-height: var(--section-title-leading);
   text-wrap: balance;
   margin: 0;
+}
+
+/* Opening paragraph under a title. */
+.lede {
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: var(--leading-body);
 }
 
 .body-copy {
@@ -33,11 +42,30 @@
 
 /* Uppercase label for small headings above a group. */
 .kicker {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--kicker-font, inherit);
+  font-size: var(--kicker-size);
+  font-weight: var(--kicker-weight);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.58);
+  letter-spacing: var(--kicker-tracking);
+  color: var(--kicker-color);
+}
+
+/* The instrument-readout voice: mono, uppercase, muted. */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Figure numbers and step indices (Fig. 1, Step 01): the red pen. */
+.fig-no {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--brand-red-strong);
 }
 
 /* Tabular figures, so numbers line up in tables and set grids. */

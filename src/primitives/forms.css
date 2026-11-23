@@ -1,0 +1,91 @@
+/*
+ * Form layout: a label, a control and its hint, in a row.
+ *
+ *   <div class="form-row">
+ *     <label class="form-label" for="load">Load <span class="form-unit">kg</span></label>
+ *     <input class="field" id="load" aria-describedby="load-hint">
+ *     <p class="form-hint" id="load-hint">Last session: 80</p>
+ *   </div>
+ *
+ * .form-grid lays rows side by side on wide screens and stacks them on narrow
+ * ones. Text-entry sizing (and its 16px touch floor) stays on .field.
+ */
+
+.form-row {
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.form-unit {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--soft);
+}
+
+/* Required marker: the pen, with the word for screen readers at the call site. */
+.form-required {
+  color: var(--brand-red-strong);
+}
+
+.form-hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.form-error {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--status-danger);
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+
+/* A fieldset that reads as a numbered notebook section. */
+.form-section {
+  margin: 0;
+  padding: var(--space-4) 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  min-width: 0;
+}
+
+.form-section > legend {
+  padding: 0 var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--brand-red-strong);
+}
+
+/* Actions under a form: primary last on wide screens, full width on phones. */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+@media (max-width: 639px) {
+  .form-actions > * {
+    flex: 1 1 100%;
+  }
+}

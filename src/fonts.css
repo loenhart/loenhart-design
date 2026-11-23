@@ -1,8 +1,29 @@
 /*
- * Web-font loading for projects without a framework font loader (e.g. Create
- * React App). Next.js projects should use next/font instead and skip this file.
+ * Self-hosted web fonts for every brand, for projects without a framework
+ * font loader (e.g. Create React App). A browser downloads only the families a
+ * page actually uses, so loading both brands costs build size, not bandwidth.
+ * To ship one brand's files only, import fonts/loenhart.css or
+ * fonts/argonauts.css instead.
  *
- * Loading via @import blocks rendering; prefer <link rel="preconnect"> plus a
- * stylesheet link in the document head where you control it.
+ *   Newsreader (variable, optical sizes)  headings      --font-brand-display
+ *   IBM Plex Sans (variable, weight)      text          --font-brand-sans
+ *   IBM Plex Mono 400 / 500               labels, data  --font-brand-mono
+ *
+ * Nothing loads from a third-party font CDN. The faces come from the
+ * Fontsource packages this package depends on (SIL Open Font License 1.1; the
+ * licence ships inside each package). A bundler resolves the bare @import
+ * paths below and copies the woff2 files into the build, so the fonts are
+ * served from the consuming site's own origin. Each @font-face carries a
+ * unicode-range, so a browser downloads only the subsets a page uses.
+ *
+ * Frameworks with their own font loader (Astro, Next.js) may import the same
+ * Fontsource files directly instead; keep the family names, which the brand
+ * tokens reference.
+ *
+ * Needs a bundler (Vite, webpack, Astro, Next.js): the @import paths are bare
+ * npm specifiers, which a browser cannot resolve when this file is served as
+ * is. Without a bundler, link the Fontsource CSS files from node_modules
+ * yourself.
  */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');
+@import './fonts/loenhart.css';
+@import './fonts/argonauts.css';

@@ -2,39 +2,50 @@
  * Labels.
  *
  * .pill for page and section labels. .surface-badge where a tighter badge fits
- * inside a row or beside a heading.
+ * inside a row or beside a heading. In the lab-notebook brand a pill is a mono
+ * label led by a pen dot (--pill-marker); in the default look it is a filled
+ * capsule.
  */
 
 .pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 2.15rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(201, 70, 89, 0.24);
-  background: linear-gradient(135deg, rgba(201, 70, 89, 0.14), rgba(61, 112, 159, 0.14), rgba(15, 30, 52, 0.82));
-  color: var(--foreground);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  min-height: var(--pill-min-height);
+  padding: var(--pill-padding);
+  border-radius: var(--pill-radius);
+  border: var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--pill-color);
+  font-family: var(--pill-font, inherit);
+  font-size: var(--pill-size);
+  font-weight: var(--pill-weight);
+  letter-spacing: var(--pill-tracking);
   text-transform: uppercase;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 26px rgba(1, 6, 16, 0.18);
+  box-shadow: var(--pill-shadow);
+}
+
+.pill::before {
+  content: var(--pill-marker);
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--pill-marker-color);
 }
 
 .surface-badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 9999px;
-  border: 1px solid rgba(201, 70, 89, 0.24);
-  background: linear-gradient(135deg, rgba(61, 112, 159, 0.22), rgba(201, 70, 89, 0.16), rgba(16, 34, 58, 0.92));
-  padding: 0.35rem 0.85rem;
-  color: var(--foreground);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  border-radius: var(--badge-radius);
+  border: var(--badge-border);
+  background: var(--badge-bg);
+  padding: var(--badge-padding);
+  color: var(--badge-color);
+  font-family: var(--badge-font, inherit);
+  font-size: var(--badge-size);
+  font-weight: var(--badge-weight);
+  letter-spacing: var(--badge-tracking);
   text-transform: uppercase;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: var(--badge-shadow);
 }

@@ -26,7 +26,26 @@
   --color-brand-red-strong: var(--brand-red-strong);
   --color-brand-red-deep: var(--brand-red-deep);
 
+  /* Lab-notebook palette (utilities like bg-ink, text-on-paper, text-pen). */
+  --color-ink: var(--ink);
+  --color-ink-raised: var(--ink-raised);
+  --color-ink-line: var(--ink-line);
+  --color-ink-line-strong: var(--ink-line-strong);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-line: var(--paper-line);
+  --color-paper-line-strong: var(--paper-line-strong);
+  --color-on-paper: var(--on-paper);
+  --color-on-paper-muted: var(--on-paper-muted);
+  --color-pen: var(--pen);
+  --color-pen-ink: var(--pen-ink);
+  --color-data: var(--data);
+  --color-data-paper: var(--data-paper);
+
   --font-sans: var(--font-brand-sans);
+  --font-serif: var(--font-brand-display);
   --font-display: var(--font-brand-display);
   --font-mono: var(--font-brand-mono);
 }

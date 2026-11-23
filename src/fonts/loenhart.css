@@ -1,0 +1,14 @@
+/*
+ * Self-hosted faces for the Loenhart (lab-notebook) brand only:
+ * Newsreader, IBM Plex Sans, IBM Plex Mono. See ../fonts.css.
+ *
+ * Needs a bundler (Vite, webpack, Astro, Next.js): the @import paths are bare
+ * npm specifiers, which a browser cannot resolve when this file is served as
+ * is. Without a bundler, link the Fontsource CSS files from node_modules
+ * yourself.
+ */
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource-variable/ibm-plex-sans/wght.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';

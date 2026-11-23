@@ -1,0 +1,215 @@
+/*
+ * Navigation: an app bar, tabs and a segmented control.
+ *
+ * Class names are prefixed (.app-nav, not .navbar) so they cannot collide
+ * with an app's own shell while it migrates.
+ */
+
+/* ---------------------------------------------------------------- App bar */
+/*
+ *   <header class="app-nav">
+ *     <a class="app-nav-brand" href="/">Loenhart Health</a>
+ *     <nav aria-label="Main" class="app-nav-links">
+ *       <a class="app-nav-link" aria-current="page" href="/home">Home</a> ...
+ *     </nav>
+ *   </header>
+ */
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 3.5rem;
+  padding: var(--space-2) var(--space-4);
+  padding-top: calc(var(--space-2) + env(safe-area-inset-top, 0px));
+  padding-left: calc(var(--space-4) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--space-4) + env(safe-area-inset-right, 0px));
+  background: var(--nav-bg);
+  backdrop-filter: var(--nav-blur);
+  border-bottom: 1px solid var(--line);
+}
+
+.app-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--foreground);
+  text-decoration: none;
+  font-family: var(--font-brand-display), Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: var(--title-weight);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-1);
+  color: var(--muted);
+  font-size: 0.93rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.app-nav-link:hover {
+  color: var(--foreground);
+  background: var(--table-row-hover);
+}
+
+/* The current page: full-strength text and a pen underline. */
+.app-nav-link[aria-current='page'] {
+  color: var(--foreground);
+  border-radius: 0;
+  box-shadow: inset 0 -2px 0 var(--tab-active-edge);
+}
+
+/* ------------------------------------------------------------------- Tabs */
+/*
+ *   <div class="tabs" role="tablist" aria-label="Week">
+ *     <button class="tab" role="tab" aria-selected="true" aria-controls="p1">Week 1</button>
+ *   </div>
+ */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 -2px 0 transparent;
+  transition: color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.tab:hover {
+  color: var(--foreground);
+}
+
+.tab[aria-selected='true'],
+.tab[aria-current='page'] {
+  color: var(--foreground);
+  box-shadow: inset 0 -2px 0 var(--tab-active-edge);
+}
+
+/* ------------------------------------------------------- Segmented control */
+/*
+ * A small exclusive choice (kg / lb, 2 / 3 / 4 days). Use buttons with
+ * aria-pressed, or native radios: input.segment-input followed by its
+ * label.segment (the radio is visually hidden; its :checked and keyboard
+ * focus style the label through the sibling combinator, no script and no
+ * :has() needed).
+ *
+ *   <div class="segmented" role="group" aria-label="Units">
+ *     <button class="segment" aria-pressed="true">kg</button>
+ *     <button class="segment" aria-pressed="false">lb</button>
+ *   </div>
+ *
+ *   <fieldset class="segmented">
+ *     <legend class="sr-only">Units</legend>
+ *     <input class="segment-input" type="radio" name="u" id="u-kg" value="kg" checked>
+ *     <label class="segment" for="u-kg">kg</label>
+ *     <input class="segment-input" type="radio" name="u" id="u-lb" value="lb">
+ *     <label class="segment" for="u-lb">lb</label>
+ *   </fieldset>
+ */
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-1);
+}
+
+.segment {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.25rem;
+  min-width: 2.75rem;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: calc(var(--radius-1) - 2px);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.segment:hover {
+  color: var(--foreground);
+}
+
+/* Native radio before its label: hidden but still focusable and announced. */
+.segment-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.segmented:is(fieldset) {
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.segment[aria-pressed='true'],
+.segment[aria-checked='true'],
+.segment.is-selected,
+.segment-input:checked + .segment {
+  background: var(--segment-active-bg);
+  color: var(--foreground);
+  box-shadow: inset 0 -2px 0 var(--tab-active-edge);
+}
+
+/* ------------------------------------------------------------------ Focus */
+.app-nav-brand:focus-visible,
+.app-nav-link:focus-visible,
+.tab:focus-visible,
+.segment:focus-visible,
+.segment-input:focus-visible + .segment {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* On touch, every target is at least 44px tall. */
+@media (pointer: coarse) {
+  .segment {
+    min-height: 2.75rem;
+  }
+}

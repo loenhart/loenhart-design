@@ -1,30 +1,233 @@
 /*
- * Loenhart Health surfaces.
+ * Loenhart Health — the "lab notebook" direction.
  *
- * Used by the Lucky Health marketing site and by LTS, so the coaching product
- * and the site clients arrive from read as one family.
+ * Used by the Loenhart Health website and the training app, so the coaching
+ * product and the site clients arrive from read as one product.
  *
- * Import AFTER tokens/core.css.
+ *   - Ink (deep navy) is the lab: data, tools, dense app screens. It is the
+ *     default surface here.
+ *   - Paper (warm off-white) is the notebook: reading and explanation. Opt in
+ *     per region with .surface-paper (primitives/surfaces.css).
+ *   - Red is the coach's annotation pen: markers, figure numbers, focus rings,
+ *     the one primary button. Never a large fill.
+ *   - Newsreader for headings, IBM Plex Sans for text, IBM Plex Mono for
+ *     labels and figures. Self-hosted: see fonts.css.
+ *
+ * Import AFTER tokens/core.css. This file restates the shared-language and
+ * component tokens it changes; anything it leaves alone keeps core's value.
+ * Token names are unchanged, so consumers written against the earlier look
+ * keep working.
  */
 
 :root {
-  --background: #07111f;
-  --background-deep: #030914;
+  /* ------------------------------------------------------- Surfaces */
+  --background: var(--ink);
+  --background-deep: var(--ink-deep);
 
-  --panel: rgba(10, 23, 42, 0.84);
-  --panel-strong: rgba(14, 30, 52, 0.94);
-  --panel-soft: rgba(22, 46, 76, 0.78);
-  --panel-contrast: rgba(28, 58, 92, 0.94);
+  /* Opaque ink ramp, lightest last. Text-safe for --muted and the pen. */
+  --panel: var(--ink-raised);
+  --panel-strong: #112340;
+  --panel-soft: #132845;
+  --panel-contrast: #16294a;
 
-  /* The lightest blue in the ramp; brand-specific because it sits against the
-     surface rather than on top of it. */
-  --brand-blue-soft: #5e87b0;
+  /* Plotted-data blue: the light end of the blue ramp. */
+  --brand-blue-soft: var(--data);
 
-  /* Page background: a deep navy-to-black gradient with soft blue and red
-     glows. Part of the brand, not decoration. */
-  --brand-backdrop:
-    radial-gradient(circle at 12% 12%, rgba(61, 112, 159, 0.2), transparent 28%),
-    radial-gradient(circle at 88% 10%, rgba(201, 70, 89, 0.16), transparent 24%),
-    radial-gradient(circle at 50% 100%, rgba(34, 74, 118, 0.2), transparent 30%),
-    linear-gradient(180deg, #091323 0%, #08111d 46%, #040a13 100%);
+  /* Flat ink. The measurement grid is opt-in (.surface-grid). */
+  --brand-backdrop: var(--ink);
+  --brand-sheen: none;
+  --selection-bg: rgb(228 107 120 / 0.34);
+
+  /* ------------------------------------------------ Shared language */
+  --foreground: var(--on-ink);
+  --muted: var(--on-ink-muted);
+  --soft: #90a4bd;
+  --line: var(--ink-line);
+  --line-strong: var(--ink-line-strong);
+
+  --brand-blue: var(--data-paper);
+  --brand-blue-strong: #3d6f9f;
+  --brand-blue-deep: #173353;
+
+  --brand-red: var(--pen);
+  --brand-red-strong: var(--pen);
+  --brand-red-deep: var(--pen-ink);
+  --brand-red-soft: rgb(228 107 120 / 0.12);
+  --brand-red-glow: rgb(228 107 120 / 0.3);
+
+  --shadow: 0 1px 0 rgb(2 7 16 / 0.35);
+  --shadow-overlay: 0 18px 48px rgb(2 7 16 / 0.55);
+
+  --font-brand-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans';
+  --font-brand-display: 'Newsreader Variable', 'Newsreader';
+  --font-brand-mono: 'IBM Plex Mono';
+
+  --transition-fast: 150ms ease;
+  --transition-base: 150ms ease;
+
+  /* ------------------------------------------------- Status hues */
+  --status-ok: var(--data);
+  --status-warn: var(--caution);
+  --status-danger: var(--pen);
+
+  /* ---------------------------------------------- Component tokens */
+  --focus-ring: var(--pen);
+  --focus-ring-offset: 3px;
+
+  --title-weight: 500;
+  --page-title-tracking: -0.025em;
+  --page-title-leading: 1.02;
+  --section-title-tracking: -0.015em;
+  --section-title-leading: 1.08;
+
+  /* The instrument-readout voice. */
+  --kicker-font: var(--font-mono);
+  --kicker-weight: 500;
+  --kicker-tracking: var(--tracking-label);
+  --kicker-color: var(--on-ink-muted);
+
+  --card-radius: var(--radius-2);
+  --card-border: var(--ink-line);
+  --card-border-hover: var(--ink-line-strong);
+  --card-bg: var(--ink-raised);
+  --card-bg-hover: var(--ink-raised);
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --card-blur: none;
+  --card-lift: none;
+
+  --callout-radius: 0 var(--radius-1) var(--radius-1) 0;
+  --callout-border: 0 solid transparent;
+  --callout-edge: 2px solid var(--pen);
+  --callout-bg: rgb(228 107 120 / 0.08);
+  --callout-color: var(--on-ink);
+  --callout-padding: 1rem 1.25rem;
+  --callout-shadow: none;
+
+  --embed-radius: var(--radius-1);
+  --embed-border: var(--ink-line-strong);
+  --embed-border-hover: var(--on-ink-muted);
+  --embed-border-selected: var(--pen);
+  --embed-bg: rgb(10 21 38 / 0.6);
+  --embed-bg-selected: rgb(228 107 120 / 0.12);
+  --embed-shadow: none;
+
+  --pill-min-height: 0;
+  --pill-padding: 0;
+  --pill-radius: 0;
+  --pill-border: 0 solid transparent;
+  --pill-bg: transparent;
+  --pill-color: var(--on-ink-muted);
+  --pill-font: var(--font-mono);
+  --pill-size: 0.75rem;
+  --pill-weight: 500;
+  --pill-tracking: var(--tracking-label);
+  --pill-shadow: none;
+  --pill-marker: '';
+  --pill-marker-color: var(--pen);
+
+  --badge-radius: var(--radius-sm);
+  --badge-border: 1px solid var(--ink-line-strong);
+  --badge-bg: transparent;
+  --badge-color: var(--on-ink-muted);
+  --badge-font: var(--font-mono);
+  --badge-size: 0.7rem;
+  --badge-weight: 500;
+  --badge-tracking: var(--tracking-label);
+  --badge-padding: 0.2rem 0.5rem;
+  --badge-shadow: none;
+
+  --btn-radius: var(--radius-1);
+  --btn-min-height: 2.875rem;
+  --btn-padding: 0.7rem 1.25rem;
+  --btn-size: 0.97rem;
+  --btn-weight: 560;
+  --btn-tracking: 0;
+  --btn-lift: none;
+  --btn-gap: 0.5rem;
+
+  /* One primary button per view: the pen as a fill, white text 6.9:1. */
+  --btn-primary-border: 1px solid transparent;
+  --btn-primary-border-hover: transparent;
+  --btn-primary-bg: var(--pen-ink);
+  --btn-primary-bg-hover: var(--pen-ink-hover);
+  --btn-primary-color: #ffffff;
+  --btn-primary-shadow: none;
+  --btn-primary-shadow-hover: none;
+  --btn-primary-filter-hover: none;
+
+  /* Secondary is a hairline outline, not a second red. */
+  --btn-secondary-border: 1px solid var(--ink-line-strong);
+  --btn-secondary-border-hover: var(--on-ink);
+  --btn-secondary-bg: transparent;
+  --btn-secondary-bg-hover: transparent;
+  --btn-secondary-color: var(--on-ink);
+  --btn-secondary-shadow: none;
+  --btn-secondary-shadow-hover: none;
+
+  --btn-ghost-radius: var(--radius-1);
+  --btn-ghost-border: var(--ink-line);
+  --btn-ghost-border-hover: var(--ink-line-strong);
+  --btn-ghost-bg: transparent;
+  --btn-ghost-bg-hover: rgb(214 226 243 / 0.06);
+  --btn-ghost-color: var(--on-ink-muted);
+  --btn-ghost-color-hover: var(--on-ink);
+
+  --link-color: currentColor;
+  --link-color-hover: currentColor;
+  --link-underline: var(--pen);
+  --link-underline-hover: currentColor;
+  --link-underline-thickness: 1.5px;
+  --link-underline-offset: 0.25em;
+
+  --icon-btn-radius: var(--radius-1);
+  --icon-btn-color: var(--on-ink-muted);
+  --icon-btn-color-hover: #ffdfe3;
+  --icon-btn-bg-hover: rgb(228 107 120 / 0.12);
+  --icon-btn-border-hover: rgb(228 107 120 / 0.4);
+
+  --field-radius: var(--radius-1);
+  --field-min-height: 2.95rem;
+  --field-padding: 0.7rem 0.9rem;
+  --field-size: 0.95rem;
+  --field-border: var(--ink-line-strong);
+  --field-border-hover: var(--on-ink-muted);
+  --field-border-focus: var(--pen);
+  --field-border-invalid: var(--pen);
+  --field-border-invalid-focus: var(--pen);
+  --field-bg: rgb(10 21 38 / 0.6);
+  --field-bg-focus: rgb(10 21 38 / 0.85);
+  --field-color: var(--on-ink);
+  --field-placeholder: rgb(169 185 205 / 0.75);
+  --field-shadow: none;
+  --field-shadow-focus: none;
+  --field-shadow-invalid-focus: 0 0 0 3px rgb(228 107 120 / 0.18);
+  --field-compact-radius: var(--radius-1);
+  --field-compact-min-height: 2.25rem;
+  --field-compact-padding: 0.35rem 0.6rem;
+  --field-compact-size: 0.85rem;
+
+  --status-radius: 0 var(--radius-1) var(--radius-1) 0;
+  --status-error-border: 0 solid transparent;
+  --status-error-edge: 2px solid var(--pen);
+  --status-error-bg: rgb(228 107 120 / 0.1);
+  --status-error-color: #ffdfe3;
+  --status-success-border: 0 solid transparent;
+  --status-success-edge: 2px solid var(--data);
+  --status-success-bg: rgb(111 159 208 / 0.12);
+  --status-success-color: #dcebfb;
+  --notice-warning-border: 0 solid transparent;
+  --notice-warning-edge: 2px solid var(--caution);
+  --notice-warning-bg: rgb(245 211 143 / 0.08);
+  --notice-warning-color: var(--caution);
+  --notice-warning-shadow: none;
+
+  --marker-bg: var(--pen);
+  --marker-ring: none;
+
+  --table-head-color: var(--on-ink-muted);
+  --tab-active-edge: var(--pen);
+  --toast-bg: var(--ink-raised);
+  --nav-bg: rgb(10 21 38 / 0.92);
+  --nav-blur: blur(12px);
 }
